@@ -53,7 +53,7 @@ namespace Merthsoft.ExpandedContextMenu {
                         command.ProcessInput(null);
                     }));
                 } catch {
-                    Log.Message($"Unable to generate gizmo menu for:{gizmo}");
+                    Log.Message($"Unable to generate gizmo menu for: {gizmo}");
                 }
             }
 
@@ -85,7 +85,6 @@ namespace Merthsoft.ExpandedContextMenu {
                                 var listMenuEntriesMethod = providerType.GetMethod("ListMenuEntries", ExpandedContextMenu.BINDING_FLAGS);
 
                                 if (listMenuEntriesMethod == null) {
-                                    Log.Message($"Checking base type for method on {providerType.Name}");
                                     listMenuEntriesMethod = providerType.BaseType.GetMethod("ListMenuEntries", ExpandedContextMenu.BINDING_FLAGS);
                                 }
                                     
@@ -97,8 +96,6 @@ namespace Merthsoft.ExpandedContextMenu {
                                         ret.Add(option);
                                         count++;
                                     }
-                                } else {
-                                    Log.Message($"Unable to find method on {providerType.Name}");
                                 }
                             }
                         }
@@ -107,8 +104,7 @@ namespace Merthsoft.ExpandedContextMenu {
                     }
                 }
             }
-
-            Log.Message($"Returning {ret.Count} items.");
+            
             return ret;
         }
     }
