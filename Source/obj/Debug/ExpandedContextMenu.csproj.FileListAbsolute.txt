@@ -1,0 +1,4 @@
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ExpandedContextMenu\Source\obj\Debug\ExpandedContextMenu.csproj.CoreCompileInputs.cache
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ExpandedContextMenu\Assemblies\ExpandedContextMenu.dll
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ExpandedContextMenu\Source\obj\Debug\ExpandedContextMenu.csproj.CopyComplete
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ExpandedContextMenu\Source\obj\Debug\ExpandedContextMenu.dll
