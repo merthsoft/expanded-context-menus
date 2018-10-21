@@ -81,7 +81,7 @@ namespace Merthsoft.ExpandedContextMenu {
                             Type providerType = provider.GetType();
                             var designatorType = providerType.GetProperty("HandledDesignatorType").GetValue(provider, null) as Type;
 
-                            if (designatorType.IsInstanceOfType(designator)) {
+                            if (designatorType != null && designatorType.IsInstanceOfType(designator)) {
                                 var listMenuEntriesMethod = providerType.GetMethod("ListMenuEntries", ExpandedContextMenu.BINDING_FLAGS);
 
                                 if (listMenuEntriesMethod == null) {
