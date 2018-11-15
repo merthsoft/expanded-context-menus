@@ -15,23 +15,28 @@ namespace Merthsoft.ExpandedContextMenu {
         public static HarmonyInstance Harmony;
 
         static ExpandedContextMenu() {
+            checkForAllowTool();
+
+            Harmony = HarmonyInstance.Create("com.Merthsoft.ExpandedContextMenu");
+            Harmony.PatchAll(Assembly.GetExecutingAssembly());
+        }
+
+        private static void checkForAllowTool() {
             try {
                 var assembly = Assembly.Load("AllowTool");
                 if (assembly == null) {
                     Log.Message("Allow tool mod not installed.");
                     return;
                 }
-
+                
                 controllerType = assembly.GetType("AllowTool.Context.DesignatorContextMenuController");
                 if (controllerType == null) {
                     Log.Message("Couldn't find controller.");
                 }
+                Log.Message("Loaded AllowTool.");
             } catch {
                 Log.Message("Unable to load Allow Tool mod. Extended functionality will be disabled.");
             }
-
-            Harmony = HarmonyInstance.Create("com.Merthsoft.ExpandedContextMenu");
-            Harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
 
         public static List<FloatMenuOption> GetMenuItems(params Thing[] things) {
