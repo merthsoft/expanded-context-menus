@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Verse;
-using Harmony;
+using HarmonyLib;
 using System.Reflection;
 using System.Collections;
 
@@ -12,12 +12,12 @@ namespace Merthsoft.ExpandedContextMenu {
         public const BindingFlags BINDING_FLAGS = BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
         
         private static Type controllerType { get; set; }
-        public static HarmonyInstance Harmony;
+        public static Harmony Harmony;
 
         static ExpandedContextMenu() {
             checkForAllowTool();
 
-            Harmony = HarmonyInstance.Create("com.Merthsoft.ExpandedContextMenu");
+            Harmony = new Harmony("Merthsoft.ExpandedContextMenus");
             Harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
 

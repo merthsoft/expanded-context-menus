@@ -1,17 +1,13 @@
-﻿using Harmony;
+﻿using HarmonyLib;
 using RimWorld;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 using Verse;
 
 namespace Merthsoft.ExpandedContextMenu {
     [HarmonyPatch(typeof(Selector), "HandleMapClicks")]
     static class Selector_HandleMapClicks_Patch {
-        public static bool Prefix(Selector __instance, Event __state) {
+        public static bool Prefix(Selector __instance) {
             if (Event.current.type != EventType.MouseDown || Event.current.button != 1) { return true; }
             if (Find.CurrentMap == null) { return true; }
 
