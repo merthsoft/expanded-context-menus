@@ -44,6 +44,9 @@ namespace Merthsoft.ExpandedContextMenu {
             if (things == null) { return ret; }
 
             var thing = things[0];
+            if (thing is Pawn pawn) {
+                ret = FloatMenuMakerMap.ChoicesAtFor(UI.MouseMapPosition(), pawn);
+            }
             
             var gizmos = thing.GetGizmos();
 
@@ -57,14 +60,12 @@ namespace Merthsoft.ExpandedContextMenu {
                         }
                         command.ProcessInput(null);
                     }));
-                } catch {
-                    Log.Message($"Unable to generate gizmo menu for: {gizmo}");
+                } catch (Exception ex) {
+                    Log.Error($"Unable to generate gizmo menu for: {gizmo} - {ex.Message}");
                 }
             }
 
-            var designators = Find.ReverseDesignatorDatabase.AllDesignators;
-
-            foreach (var designator in designators) {
+            foreach (var designator in Find.ReverseDesignatorDatabase.AllDesignators) {
                 if (designator.CanDesignateThing(thing).Accepted) {
                     var mainOption = new FloatMenuOption(designator.LabelCapReverseDesignating(thing), () => {
                         if (!TutorSystem.AllowAction(designator.TutorTagDesignate)) {
