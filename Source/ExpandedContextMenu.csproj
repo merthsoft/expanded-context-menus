@@ -45,6 +45,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompatabilityWrappers\AchtungModCompatabilityWrapper.cs" />
+    <Compile Include="CompatabilityWrappers\AllowToolCompatabilityWrapper.cs" />
     <Compile Include="ExpandedContextMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Selector_HandleMapClicks_Patch.cs" />

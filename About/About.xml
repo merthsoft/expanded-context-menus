@@ -10,4 +10,8 @@
   <packageId>Merthsoft.ExpandedContextMenus</packageId>
 	<description> Adds expanded context menus when you right click on an object. Works with AllowTool's right-click menus, but you should disable the watermark for AllowTool in the mod options.
   </description>
+  <loadAfter>
+    <li>brrainz.achtung</li>
+    <li>UnlimitedHugs117.AllowHTool</li>
+  </loadAfter>
 </ModMetaData>
