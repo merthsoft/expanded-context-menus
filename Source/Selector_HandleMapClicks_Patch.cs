@@ -12,8 +12,7 @@ namespace Merthsoft.ExpandedContextMenu {
 
             var (menuItems, labelCap) = ExpandedContextMenu.AttemptPatch(__instance);
             if (menuItems == null || menuItems.Count == 0) {
-                Log.Message("- No menu items returned.");
-                return false;
+                return true;
             }
 
             FloatMenu floatMenu = new FloatMenu(menuItems, labelCap);
