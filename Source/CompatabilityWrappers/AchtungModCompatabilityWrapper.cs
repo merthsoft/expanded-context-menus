@@ -1,39 +1,41 @@
 ﻿using HarmonyLib;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using Verse;
 
 namespace Merthsoft.ExpandedContextMenu.CompatabilityWrappers {
     static class AchtungModCompatabilityWrapper {
+        private const string PackageId = "brrainz.achtung";
+        private const string GetWindowMethod = "AchtungMod.MultiActions:GetWindow";
         private static bool CompatabilityEnabled { get; set; } = false;
 
         public static void AttemptEnableCompatability(Harmony harmony) {
-            var method = AccessTools.Method("AchtungMod.MultiActions:GetWindow") as MethodBase;
+            if (!LoadedModManager.RunningModsListForReading.Exists(m => m.PackageId.Equals(PackageId, StringComparison.InvariantCultureIgnoreCase))) {
+                Log.Message($"Achtung compatability not enabled: No mod with package id {PackageId} was found.");
+                return;
+            }
+
+            var method = AccessTools.Method(GetWindowMethod) as MethodBase;
             if (method == null) {
-                Log.Message("Could not load AchtungMod, compatability not enabled.");
+                Log.Message($"Achtung compatability not enabled: Could not load method {GetWindowMethod}.");
                 return;
             }
             try {
                 harmony.Patch(method, postfix: new HarmonyMethod(AccessTools.Method(typeof(AchtungModCompatabilityWrapper), "GetWindowPostfix")));
                 CompatabilityEnabled = true;
-                Log.Message("AchtungMod compatability enabled.");
+                Log.Message("Achtung compatability enabled.");
             } catch (Exception ex) {
-                Log.Error($"AchtungMod compatability failed: {ex}");
+                Log.Error($"Achtung compatability not enabled: {ex}");
             }
         }
 
         public static void GetWindowPostfix(ref Window __result) {
             if (CompatabilityEnabled && __result is FloatMenu floatMenu) {
-                var options = Traverse.Create(floatMenu).Field<List<FloatMenuOption>>("options").Value;
+                var (options, labelCap) = ExpandedContextMenu.AddToFloatMenu(floatMenu, Find.MapUI.selector, true);
                 if (options == null) {
                     CompatabilityEnabled = false;
-                    Log.Error("AchtungMod compatability failed: Failed to get private field `options` on floatMenu");
-                    return;
+                    Log.Error("Achtung compatability failed: AddToFloatMenu returned null.");
                 }
-                var (menuItems, labelCap) = ExpandedContextMenu.AttemptPatch(Find.MapUI.selector, true);
-                if (menuItems == null || menuItems.Count == 0) { return; }
-                options.AddRange(menuItems);
                 __result = new FloatMenu(options, labelCap);
             }
         }
