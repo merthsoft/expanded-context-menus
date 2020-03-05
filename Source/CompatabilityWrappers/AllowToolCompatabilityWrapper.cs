@@ -7,6 +7,7 @@ using Verse;
 
 namespace Merthsoft.ExpandedContextMenu.CompatabilityWrappers {
     static class AllowToolCompatabilityWrapper {
+        private const string PackageId = "UnlimitedHugs.AllowTool";
         private const string DesignatorContextMenuControllerTypeName = "AllowTool.Context.DesignatorContextMenuController";
         private const string MenuProvidersFieldName = "menuProviders";
         private const string HandleDesignatorTypePropertyName = "HandledDesignatorType";
@@ -20,6 +21,11 @@ namespace Merthsoft.ExpandedContextMenu.CompatabilityWrappers {
         private static Type AllowToolMenuController { get; set; }
 
         public static void AttemptEnableCompatability() {
+            if (!LoadedModManager.RunningModsListForReading.Exists(m => m.PackageId.Equals(PackageId, StringComparison.InvariantCultureIgnoreCase))) {
+                Log.Message($"Achtung compatability not enabled: No mod with package id {PackageId} was found.");
+                return;
+            }
+
             AllowToolMenuController = AccessTools.TypeByName(DesignatorContextMenuControllerTypeName);
             if (AllowToolMenuController == null) {
                 Log.Message("Failed to load AllowTool, compatability not enabled.");

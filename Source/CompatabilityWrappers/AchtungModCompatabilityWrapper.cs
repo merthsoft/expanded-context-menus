@@ -31,12 +31,12 @@ namespace Merthsoft.ExpandedContextMenu.CompatabilityWrappers {
 
         public static void GetWindowPostfix(ref Window __result) {
             if (CompatabilityEnabled && __result is FloatMenu floatMenu) {
-                var (options, labelCap) = ExpandedContextMenu.AddToFloatMenu(floatMenu, Find.MapUI.selector, true);
-                if (options == null) {
+                floatMenu = ExpandedContextMenu.AddToFloatMenu(floatMenu, Find.MapUI.selector, true);
+                if (floatMenu == null) {
                     CompatabilityEnabled = false;
                     Log.Error("Achtung compatability failed: AddToFloatMenu returned null.");
                 }
-                __result = new FloatMenu(options, labelCap);
+                __result = floatMenu;
             }
         }
     }
