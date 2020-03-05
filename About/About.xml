@@ -12,6 +12,7 @@
   </description>
   <loadAfter>
     <li>brrainz.achtung</li>
+    <li>brrainz.reversecommands</li>
     <li>UnlimitedHugs117.AllowHTool</li>
   </loadAfter>
 </ModMetaData>

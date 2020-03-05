@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using Merthsoft.ExpandedContextMenu.CompatabilityWrappers;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -6,7 +7,12 @@ using Verse;
 namespace Merthsoft.ExpandedContextMenu {
     [HarmonyPatch(typeof(Selector), "HandleMapClicks")]
     static class Selector_HandleMapClicks_Patch {
+        [HarmonyAfter(new[] { "net.pardeike.reversecommands" })]
         public static bool Prefix(Selector __instance) {
+            if (Event.current.type == EventType.Used && ReverseCommandsCompatabilityWrapper.Patch(__instance)) {
+                return false;
+            }
+
             if (Event.current.type != EventType.MouseDown || Event.current.button != 1) { return true; }
             if (Find.CurrentMap == null) { return true; }
 

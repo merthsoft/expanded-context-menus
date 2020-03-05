@@ -9,7 +9,9 @@ using Verse;
 
 namespace Merthsoft.ExpandedContextMenu {
     [StaticConstructorOnStartup]
-    public class ExpandedContextMenu {        
+    public class ExpandedContextMenu {
+        private const string FloatMenuOptionsFieldName = "options";
+
         public static Harmony Harmony;
 
         static ExpandedContextMenu() {
@@ -17,7 +19,25 @@ namespace Merthsoft.ExpandedContextMenu {
             Harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             AllowToolCompatabilityWrapper.AttemptEnableCompatability();
-            AchtungModCompatabilityWrapper.AttemptEnableCompatability(Harmony);
+        }
+
+        public static (List<FloatMenuOption> options, string labelCap) AddToFloatMenu(FloatMenu floatMenu, Selector selector, bool skipDefaultChoices) {
+            try {
+                var options = Traverse.Create(floatMenu).Field<List<FloatMenuOption>>(FloatMenuOptionsFieldName).Value;
+                if (options == null) {
+                    Log.Error($"Unable to load field {FloatMenuOptionsFieldName} of type List<FloatMenuOption> on {floatMenu.GetType().Name}");
+                    return (null, null);
+                }
+                var (menuItems, labelCap) = AttemptPatch(selector, skipDefaultChoices);
+                if (menuItems == null || menuItems.Count == 0) { 
+                    return (options, null);
+                }
+                options.AddRange(menuItems);
+                return (options, labelCap);
+            } catch (Exception ex) {
+                Log.Error($"Error in AddToFloatMenu: {ex}"); 
+                return (null, null);
+            }
         }
 
         public static (List<FloatMenuOption> menuItems, string labelCap) AttemptPatch(Selector selector, bool skipDefaultChoices = false) {
@@ -61,16 +81,16 @@ namespace Merthsoft.ExpandedContextMenu {
             }
 
             foreach (var gizmo in thing.GetGizmos()) {
-                var command = gizmo as Command;
-                if (command == null) { continue; }
-                try {
-                    ret.Add(new FloatMenuOption(command.LabelCap ?? command.Desc?.Split('\n')[0].CapitalizeFirst().Trim() ?? command.TutorTagSelect, () => {
-                        if (TutorSystem.AllowAction(command.TutorTagSelect)) {
-                            command.ProcessInput(null);
-                        }                        
-                    }));
-                } catch (Exception ex) {
-                    Log.Error($"Unable to generate gizmo menu for: {gizmo} - {ex.Message}");
+                if (gizmo is Command command) {
+                    try {
+                        ret.Add(new FloatMenuOption(command.LabelCap ?? command.Desc?.Split('\n')[0].CapitalizeFirst().Trim() ?? command.TutorTagSelect, () => {
+                            if (TutorSystem.AllowAction(command.TutorTagSelect)) {
+                                command.ProcessInput(null);
+                            }
+                        }));
+                    } catch (Exception ex) {
+                        Log.Error($"Unable to generate gizmo menu for: {gizmo} - {ex.Message}");
+                    }
                 }
             }
 
