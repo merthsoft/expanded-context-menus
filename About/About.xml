@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
 	<name>Expanded Context Menus - dev</name>
 	<author>Shaun McFall</author>
@@ -8,7 +8,11 @@
     <li>1.1</li>
   </supportedVersions>
   <packageId>Merthsoft.ExpandedContextMenus</packageId>
-	<description> Adds expanded context menus when you right click on an object. Works with AllowTool's right-click menus, but you should disable the watermark for AllowTool in the mod options.
+	<description>Adds expanded context menus when you right click on an object. 
+  
+  Works with AllowTool's right-click menus, but you should disable the watermark for AllowTool in the mod options.
+  Works with Achtung's force commands
+  Works with Reverse Commands' reverse commands
   </description>
   <loadAfter>
     <li>brrainz.achtung</li>
