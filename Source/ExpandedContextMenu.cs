@@ -19,29 +19,34 @@ namespace Merthsoft.ExpandedContextMenu {
             Harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             AllowToolCompatabilityWrapper.AttemptEnableCompatability();
+            AchtungModCompatabilityWrapper.AttemptEnableCompatability(Harmony);
+            ReverseCommandsCompatabilityWrapper.AttemptEnableCompatability();
         }
 
-        public static (List<FloatMenuOption> options, string labelCap) AddToFloatMenu(FloatMenu floatMenu, Selector selector, bool skipDefaultChoices) {
+        public static FloatMenu AddToFloatMenu(FloatMenu floatMenu, Selector selector, bool skipDefaultChoices) {
             try {
                 var options = Traverse.Create(floatMenu).Field<List<FloatMenuOption>>(FloatMenuOptionsFieldName).Value;
                 if (options == null) {
                     Log.Error($"Unable to load field {FloatMenuOptionsFieldName} of type List<FloatMenuOption> on {floatMenu.GetType().Name}");
-                    return (null, null);
+                    return null;
                 }
-                var (menuItems, labelCap) = AttemptPatch(selector, skipDefaultChoices);
+                var (menuItems, labelCap) = AttemptPatchInternal(selector, skipDefaultChoices);
                 if (menuItems == null || menuItems.Count == 0) { 
-                    return (options, null);
+                    return ReverseCommandsCompatabilityWrapper.GetFloatMenu(options, null);
                 }
                 options.AddRange(menuItems);
-                return (options, labelCap);
+                return ReverseCommandsCompatabilityWrapper.GetFloatMenu(options, labelCap);
             } catch (Exception ex) {
                 Log.Error($"Error in AddToFloatMenu: {ex}"); 
-                return (null, null);
+                return null;
             }
         }
 
-        public static (List<FloatMenuOption> menuItems, string labelCap) AttemptPatch(Selector selector, bool skipDefaultChoices = false) {
-            var things = selector.SelectedObjectsListForReading.Where(s => s is Thing).Select(s => s as Thing);
+        public static FloatMenu AttemptPatch(Selector selector)
+            => ReverseCommandsCompatabilityWrapper.GetFloatMenu(AttemptPatchInternal(selector, false));
+
+        private static (List<FloatMenuOption>, string) AttemptPatchInternal(Selector selector, bool skipDefaultChoices) {
+                var things = selector.SelectedObjectsListForReading.Where(s => s is Thing).Select(s => s as Thing);
             if (things.Count() == 0) {
                 return (null, null);
             }
@@ -105,7 +110,9 @@ namespace Merthsoft.ExpandedContextMenu {
                     ret.AddRange(AllowToolCompatabilityWrapper.GetMenuItems(designator));
                 }
             }
-            
+
+            ret.AddRange(ReverseCommandsCompatabilityWrapper.GetMenuItems());
+
             return ret;
         }
     }
