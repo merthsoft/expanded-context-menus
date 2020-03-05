@@ -19,8 +19,6 @@ namespace Merthsoft.ExpandedContextMenu {
             Harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             AllowToolCompatabilityWrapper.AttemptEnableCompatability();
-            AchtungModCompatabilityWrapper.AttemptEnableCompatability(Harmony);
-            ReverseCommandsCompatabilityWrapper.AttemptEnableCompatability();
         }
 
         public static (List<FloatMenuOption> options, string labelCap) AddToFloatMenu(FloatMenu floatMenu, Selector selector, bool skipDefaultChoices) {
