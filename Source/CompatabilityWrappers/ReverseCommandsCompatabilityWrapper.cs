@@ -110,6 +110,8 @@ namespace Merthsoft.ExpandedContextMenu.CompatabilityWrappers {
             => GetFloatMenu(item.options, item.labelCap);
 
         public static FloatMenu GetFloatMenu(List<FloatMenuOption> options, string labelCap) {
+            if (options == null) { return null; }
+
             if (CompatabilityEnabled) {
                 try {
                     var newFloatMenu = Activator.CreateInstance(Types.FloatMenuLabels, options);
