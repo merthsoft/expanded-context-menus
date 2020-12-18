@@ -1,14 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-	<name>Expanded Context Menus - dev</name>
-	<author>Shaun McFall</author>
-	<url>https://bitbucket.org/merthsoft/expanded-context-menus/src</url>
+  <name>Expanded Context Menus - dev</name>
+  <author>Shaun McFall</author>
+  <url>https://github.com/merthsoft/expanded-context-menus</url>
   <supportedVersions>
-    <li>1.0</li>
     <li>1.1</li>
+    <li>1.2</li>
   </supportedVersions>
+  <modDependenciesByVersion>
+    <v1.2>
+      <li>
+        <packageId>Harmony</packageId>
+        <displayName>Harmony</displayName>
+        <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+      </li>
+    </v1.2>
+  </modDependenciesByVersion>
   <packageId>Merthsoft.ExpandedContextMenus</packageId>
-	<description>Adds expanded context menus when you right click on an object. 
+  <description>Adds expanded context menus when you right click on an object. 
   
   Works with AllowTool's right-click menus, but you should disable the watermark for AllowTool in the mod options.
   Works with Achtung's force commands
