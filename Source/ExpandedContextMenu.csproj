@@ -17,7 +17,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'RimWorld|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\1.4\Assemblies\</OutputPath>
+    <OutputPath>..\1.5\Assemblies\</OutputPath>
     <DefineConstants>
     </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -43,7 +43,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompatabilityWrappers\AchtungModCompatabilityWrapper.cs" />
+    <Compile Include="CompatabilityWrappers\AchtungModCompatibilityWrapper.cs" />
     <Compile Include="CompatabilityWrappers\AllowToolCompatabilityWrapper.cs" />
     <Compile Include="CompatabilityWrappers\ReverseCommandsCompatabilityWrapper.cs" />
     <Compile Include="ExpandedContextMenu.cs" />
@@ -52,8 +52,8 @@
     <Compile Include="Selector_HandleMapClicks_Patch.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Lib.Harmony">
-      <Version>2.0.4</Version>
+    <PackageReference Include="Lib.Harmony" ExcludeAssets="runtime">
+      <Version>2.3.1.1</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

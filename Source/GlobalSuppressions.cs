@@ -5,8 +5,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Style", "IDE0019:Use pattern matching", Justification = "This is easier to read like this than with pattern matching", Scope = "member", Target = "~M:Merthsoft.ExpandedContextMenu.CompatabilityWrappers.AllowToolCompatabilityWrapper.GetMenuItems(Verse.Designator)~System.Collections.Generic.List{Verse.FloatMenuOption}")]
-[assembly: SuppressMessage("Style", "IDE0019:Use pattern matching", Justification = "This is easier to read like this than with pattern matching", Scope = "member", Target = "~M:Merthsoft.ExpandedContextMenu.CompatabilityWrappers.ReverseCommandsCompatabilityWrapper.Patch(RimWorld.Selector)~System.Boolean")]
+[assembly: SuppressMessage("Style", "IDE0019:Use pattern matching", Justification = "This is easier to read like this than with pattern matching", Scope = "member", Target = "~M:Merthsoft.ExpandedContextMenu.CompatibilityWrappers.AllowToolCompatibilityWrapper.GetMenuItems(Verse.Designator)~System.Collections.Generic.List{Verse.FloatMenuOption}")]
 [assembly: SuppressMessage("Spellchecker", "CRRSP06:A misspelled word has been found", Justification = "identifier", Scope = "member", Target = "~M:Merthsoft.ExpandedContextMenu.Selector_HandleMapClicks_Patch.Prefix(RimWorld.Selector)~System.Boolean")]
-[assembly: SuppressMessage("Spellchecker", "CRRSP06:A misspelled word has been found", Justification = "identifier", Scope = "member", Target = "~F:Merthsoft.ExpandedContextMenu.CompatabilityWrappers.AchtungModCompatabilityWrapper.PackageId")]
-[assembly: SuppressMessage("Spellchecker", "CRRSP06:A misspelled word has been found", Justification = "identifier", Scope = "member", Target = "~F:Merthsoft.ExpandedContextMenu.CompatabilityWrappers.ReverseCommandsCompatabilityWrapper.PackageId")]
+[assembly: SuppressMessage("Spellchecker", "CRRSP06:A misspelled word has been found", Justification = "identifier", Scope = "member", Target = "~F:Merthsoft.ExpandedContextMenu.CompatibilityWrappers.AchtungModCompatibilityWrapper.PackageId")]
+[assembly: SuppressMessage("Spellchecker", "CRRSP06:A misspelled word has been found", Justification = "identifier", Scope = "member", Target = "~F:Merthsoft.ExpandedContextMenu.CompatibilityWrappers.ReverseCommandsCompatibilityWrapper.PackageId")]
