@@ -127,11 +127,11 @@ static class ReverseCommandsCompatibilityWrapper {
     }
 
     public static IEnumerable<FloatMenuOption> GetMenuItems() {
-        if (!CompatibilityEnabled) { return Enumerable.Empty<FloatMenuOption>(); }
+        if (!CompatibilityEnabled) { return []; }
 
         try {
             var labeledPawnActions = Methods.GetPawnActions.GetValue<Dictionary<string, Dictionary<Pawn, FloatMenuOption>>>(null);
-            if (!labeledPawnActions.Any()) { return Enumerable.Empty<FloatMenuOption>(); }
+            if (!labeledPawnActions.Any()) { return []; }
 
             var cell = UI.MouseCell();
             Find.CurrentMap.mapPawns.FreeColonists.Where(pawn => Methods.PawnUsable.GetValue<bool>(pawn)).Do(pawn => Methods.AddInfo.GetValue(pawn, cell));
@@ -143,7 +143,7 @@ static class ReverseCommandsCompatibilityWrapper {
         } catch (Exception ex) {
             Log.Error($"Reverse Commands Compatibility disabled: An exception occurred in GetMenuItems: " + ex);
             CompatibilityEnabled = false;
-            return Enumerable.Empty<FloatMenuOption>();
+            return [];
         }
     }
 }

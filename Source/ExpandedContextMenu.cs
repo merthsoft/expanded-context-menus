@@ -46,7 +46,7 @@ public class ExpandedContextMenu {
         => ReverseCommandsCompatibilityWrapper.GetFloatMenu(AttemptPatchInternal(selector, false));
 
     private static (List<FloatMenuOption>, string) AttemptPatchInternal(Selector selector, bool skipDefaultChoices) {
-            var things = selector.SelectedObjectsListForReading.Where(s => s is Thing).Select(s => s as Thing);
+        var things = selector.SelectedObjectsListForReading.Where(s => s is Thing).Select(s => s as Thing);
         if (things.Count() == 0) {
             return (null, null);
         }
@@ -75,44 +75,70 @@ public class ExpandedContextMenu {
     }
 
     private static List<FloatMenuOption> GetMenuItems(IEnumerable<Thing> things, bool skipDefaultChoices) {
-        List<FloatMenuOption> ret = new List<FloatMenuOption>();
+        List<FloatMenuOption> ret = [];
         if (things == null) { return ret; }
 
         var thing = things.FirstOrDefault();
         if (thing == null) { return ret; }
 
         if (thing is Pawn pawn && !skipDefaultChoices) {
-            ret = FloatMenuMakerMap.ChoicesAtFor(UI.MouseMapPosition(), pawn);
+            ret = FloatMenuMakerMap.GetOptions([pawn], UI.MouseMapPosition(), out var _);
         }
-
+        
         foreach (var gizmo in thing.GetGizmos()) {
             if (gizmo is Command command) {
-                try {
-                    ret.Add(new FloatMenuOption(command.LabelCap ?? command.Desc?.Split('\n')[0].CapitalizeFirst().Trim() ?? command.TutorTagSelect, () => {
-                        if (TutorSystem.AllowAction(command.TutorTagSelect)) {
-                            command.ProcessInput(null);
-                        }
-                    }));
-                } catch (Exception ex) {
+                try
+                {
+                    ret.Add(CommandToFloatMenuOption(command));
+                }
+                catch (Exception ex) {
                     Log.Error($"Unable to generate gizmo menu for: {gizmo} - {ex.Message}");
                 }
             }
         }
 
         foreach (var designator in Find.ReverseDesignatorDatabase.AllDesignators) {
-            if (designator.CanDesignateThing(thing).Accepted) {
-                ret.Add(new FloatMenuOption(designator.LabelCapReverseDesignating(thing), () => {
-                    if (TutorSystem.AllowAction(designator.TutorTagDesignate)) {
-                        things.Do(t => designator.DesignateThing(t));
-                        designator.Finalize(true);
-                    }
-                }));
+            if (designator.CanDesignateThing(thing).Accepted)
+            {
+                ret.Add(DesignatorToFloatMenuOption(things, thing, designator));
                 ret.AddRange(AllowToolCompatibilityWrapper.GetMenuItems(designator));
             }
         }
 
         ret.AddRange(ReverseCommandsCompatibilityWrapper.GetMenuItems());
 
+        if (ret.Count == 0)
+            return null;
+
         return ret;
     }
+
+    private static FloatMenuOption DesignatorToFloatMenuOption(IEnumerable<Thing> things, Thing thing, Designator designator)
+        => new(
+            label: designator.LabelCapReverseDesignating(thing),
+            action: () =>
+            {
+                if (TutorSystem.AllowAction(designator.TutorTagDesignate))
+                {
+                    things.Do(t => designator.DesignateThing(t));
+                    designator.Finalize(true);
+                }
+            })
+        {
+            Disabled = designator.Disabled
+        };
+
+    private static FloatMenuOption CommandToFloatMenuOption(Command command) 
+        => new(
+            label: command.LabelCap ?? command.Desc?.Split('\n')[0].CapitalizeFirst().Trim() ?? command.TutorTagSelect, 
+            action: () =>
+            {
+                if (TutorSystem.AllowAction(command.TutorTagSelect))
+                {
+                    command.ProcessInput(null);
+                }
+            })
+        { 
+            Disabled = command.Disabled,
+        };
 }

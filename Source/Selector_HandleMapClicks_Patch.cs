@@ -4,7 +4,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace Merthsoft.ExpandedContextMenu; 
+namespace Merthsoft.ExpandedContextMenu;
 [HarmonyPatch(typeof(Selector), "HandleMapClicks")]
 static class Selector_HandleMapClicks_Patch {
     [HarmonyBefore("net.pardeike.reversecommands")]
